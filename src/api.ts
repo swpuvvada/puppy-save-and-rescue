@@ -130,9 +130,11 @@ export const getOwnerById = ((async (event) => {
 export const getLostPets = ((async (event) => {
     // Initialize the DB
     let db = await init();
+    const lostPets = db.exec("SELECT pets.* FROM pets left join owners_pets ON owners_pets.pet_id = pets.id where owners_pets.owner_id is NULL;");
 
-    // TODO: Finish implementation here
+    const prettyRestults = serialize(lostPets);
 
-    return { statusCode: 200 }
+    return { statusCode: 200, body: JSON.stringify(prettyRestults) }
 }))
+
 
